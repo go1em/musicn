@@ -55,14 +55,23 @@
               </span>
               <a-avatar slot="avatar" :src="item.cover" />
             </a-list-item-meta>
-            <a-button
-              :disabled="item.disabled"
-              :loading="downloadLoadingList.includes(item.id)"
-              type="primary"
-              shape="circle"
-              icon="download"
-              @click.stop="onDownload(item)"
-            />
+            <div style="white-space: nowrap;">
+              <a-button
+                :disabled="item.disabled"
+                :loading="downloadLoadingList.includes(item.id)"
+                type="primary"
+                shape="circle"
+                icon="download"
+                @click.stop="onDownload(item)"
+              />
+              <a-button
+                type="default"
+                shape="circle"
+                icon="info-circle"
+                @click.stop="onInfo(item)"
+                style="margin-left: 8px;"
+              />
+            </div>
           </a-list-item>
         </a-list>
       </div>
