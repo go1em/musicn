@@ -1,0 +1,5 @@
+[33m5f27eda[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m 加上了但是错位
+[33m14b3faa[m[33m ([m[1;33mtag: v1.5.3-beta.1[m[33m)[m refactor: 删除多余事件
+[33mc6b1b57[m chore: release v1.5.3-beta.0
+[33m7d1ad7d[m refactor: 增加play事件
+[33m3d1532e[m refactor: 无需使用AbortController

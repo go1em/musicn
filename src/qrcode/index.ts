@@ -137,7 +137,7 @@ export default async (options: CommandOptions) => {
     ) => {
       try {
         const { service, url, songName, lyricUrl } = req.query
-        const downloadPath = process.env.DOWNLOAD_PATH || '/download'
+        const downloadPath = process.env.DOWNLOAD_PATH || '/data'
 
         if (!existsSync(downloadPath)) {
           mkdirSync(downloadPath, { recursive: true })
