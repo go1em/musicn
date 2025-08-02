@@ -38,8 +38,8 @@
               shape="circle" icon="download" @click.stop="onDownload(item)" />
           </span>
           <span>
-            <a-button :disabled="item.disabled" type="primary" shape="circle" icon="info-circle"
-              @click.stop="onInfo(item)" />
+            <a-button :disabled="item.disabled" type="primary" shape="circle" icon="cloud-download"
+              @click.stop="onServerDownload(item)" />
           </span>
         </a-list-item>
       </a-list>
@@ -178,6 +178,26 @@
               this.downloadLoadingList.findIndex((item) => item === id),
               1
             )
+          }
+        },
+        async onServerDownload({ id, url, songName, lyricUrl }) {
+          try {
+            const { service } = this.params
+            const response = await fetch(
+              `/server-download?service=${service}&url=${url}&songName=${songName}&lyricUrl=${lyricUrl}`,
+              {
+                method: 'GET',
+              }
+            )
+            const result = await response.json()
+            if (result.success) {
+              // 可以添加成功提示
+              console.log('文件已下载到服务器:', result.filePath)
+            } else {
+              console.error('服务器下载失败:', result.error)
+            }
+          } catch (error) {
+            console.error('服务器下载时出错:', error)
           }
         },
 

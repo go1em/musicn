@@ -124,6 +124,50 @@ export default async (options: CommandOptions) => {
     }
   )
 
+  app.get(
+    '/server-download',
+    async (
+      req: Request<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>,
+        DownloadRequestType
+      >,
+      res: Response
+    ) => {
+      try {
+        const { service, url, songName, lyricUrl } = req.query
+        const downloadPath = process.env.DOWNLOAD_PATH || '/download'
+
+        if (!existsSync(downloadPath)) {
+          mkdirSync(downloadPath, { recursive: true })
+        }
+
+        const songPath = join(downloadPath, songName)
+        await pipeline(got.stream(url), createWriteStream(songPath))
+
+        if (withLyric) {
+          const lrcPath = join(downloadPath, `${songName.split('.')[0]}.lrc`)
+          await lyricDownload[service](lrcPath, lyricUrl).catch(() => {
+            createWriteStream(lrcPath).write('[00:00.00]无歌词')
+          })
+        }
+
+        res.json({
+          success: true,
+          filePath: songPath,
+          message: '文件已成功下载到服务器',
+        })
+      } catch (error) {
+        console.error('服务器下载失败:', error)
+        res.status(500).json({
+          success: false,
+          error: error instanceof Error ? error.message : '下载失败',
+        })
+      }
+    }
+  )
+
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(res.statusCode || 500)
     res.render('error', {
