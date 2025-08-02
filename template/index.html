@@ -38,7 +38,8 @@
               shape="circle" icon="download" @click.stop="onDownload(item)" />
           </span>
           <span>
-            <a-button type="default" shape="circle" icon="info-circle" @click.stop="onInfo(item)" />
+            <a-button :disabled="item.disabled" type="primary" shape="circle" icon="info-circle"
+              @click.stop="onInfo(item)" />
           </span>
         </a-list-item>
       </a-list>
