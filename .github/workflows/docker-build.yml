@@ -29,14 +29,14 @@ jobs:
         context: .
         push: true
         tags: |
-          go1em/musicn:latest
-          go1em/musicn:${{ github.sha }}
+          guohw/musicn:latest
+          guohw/musicn:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         
     - name: Show image size
       run: |
-        docker images go1em/musicn:latest --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+        docker images guohw/musicn:latest --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
         
     - name: Show usage instructions
       run: |
@@ -47,7 +47,7 @@ jobs:
         echo "  --name musicn \\"
         echo "  -p 7478:7478 \\"
         echo "  -v /volume1/docker/musicn/data:/data \\"
-        echo "  go1em/musicn:latest"
+        echo "  guohw/musicn:latest"
         echo ""
         echo "或者使用自定义下载目录："
         echo "docker run -d \\"
@@ -55,4 +55,4 @@ jobs:
         echo "  -p 7478:7478 \\"
         echo "  -e DOWNLOAD_PATH=/custom/path \\"
         echo "  -v /volume1/docker/musicn/custom:/custom/path \\"
-        echo "  go1em/musicn:latest" 
+        echo "  guohw/musicn:latest" 
