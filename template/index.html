@@ -38,8 +38,8 @@
               shape="circle" icon="download" @click.stop="onDownload(item)" />
           </span>
           <span>
-            <a-button :disabled="item.disabled" type="primary" shape="circle" icon="cloud-download"
-              @click.stop="onServerDownload(item)" />
+            <a-button :disabled="item.disabled" :loading="serverDownloadLoadingList.includes(item.id)" type="primary"
+              shape="circle" icon="cloud-download" @click.stop="onServerDownload(item)" />
           </span>
         </a-list-item>
       </a-list>
@@ -54,6 +54,7 @@
           dataSource: [],
           loading: false,
           downloadLoadingList: [],
+          serverDownloadLoadingList: [],
           services: [
             {
               label: '咪咕',
@@ -144,6 +145,7 @@
           this.activeId = ''
           this.isInitial = true
           this.downloadLoadingList = []
+          this.serverDownloadLoadingList = []
           this.params.pageNum = current ?? 1
           this.pagination.current = current ?? 1
           this.getDataSource()
@@ -183,6 +185,8 @@
         async onServerDownload({ id, url, songName, lyricUrl }) {
           try {
             const { service } = this.params
+            this.serverDownloadLoadingList.push(id)
+
             const response = await fetch(
               `/server-download?service=${service}&url=${url}&songName=${songName}&lyricUrl=${lyricUrl}`,
               {
@@ -190,14 +194,23 @@
               }
             )
             const result = await response.json()
+
             if (result.success) {
-              // 可以添加成功提示
-              console.log('文件已下载到服务器:', result.filePath)
+              // 显示成功消息
+              this.$message.success(`文件已下载到服务器: ${result.filePath}`)
             } else {
-              console.error('服务器下载失败:', result.error)
+              // 显示错误消息
+              this.$message.error(`服务器下载失败: ${result.error}`)
             }
           } catch (error) {
             console.error('服务器下载时出错:', error)
+            this.$message.error('服务器下载时出错，请检查网络连接')
+          } finally {
+            // 移除loading状态
+            this.serverDownloadLoadingList.splice(
+              this.serverDownloadLoadingList.findIndex((item) => item === id),
+              1
+            )
           }
         },
 

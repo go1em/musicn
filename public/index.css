@@ -73,6 +73,16 @@
   margin-left: 12px;
 }
 
+/* 消息提示样式优化 */
+.ant-message {
+  z-index: 1010;
+}
+
+/* 按钮loading状态样式 */
+.ant-btn-loading {
+  pointer-events: none;
+}
+
 /* 服务器下载按钮样式 - 使用橙色主色调 */
 .ant-list-item>span:last-child .ant-btn-primary {
   background-color: #fa8c16;
