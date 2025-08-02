@@ -25,15 +25,13 @@ RUN apk add --no-cache dumb-init
 
 WORKDIR /app
 
-# 只复制必要的文件
+# 复制所有必要文件
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/bin ./bin
 COPY --from=builder /app/template ./template
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
-
-# 只安装生产依赖
-RUN npm install --only=production
+COPY --from=builder /app/node_modules ./node_modules
 
 # 创建下载目录
 RUN mkdir -p /data
